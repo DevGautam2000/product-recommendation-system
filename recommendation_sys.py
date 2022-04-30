@@ -10,6 +10,7 @@ Original file is located at
 # !pip install sklearn
 
 #import libraries
+import json
 import numpy as mp
 import pandas as pd
 
@@ -24,7 +25,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 df = pd.read_csv('./prods.csv')
 
 
-def recommend():
+def recommend(name):
 
     df['product_id'] = range(0, len(df))
     # show the first 2 rows in csv
@@ -65,28 +66,34 @@ def recommend():
     # get the shape of the consine similarity matrix
     cs.shape
 
-    pname = 'Bread and sandwich'
+    pname = name
 
     # get the id of the movie
-    product_id = df[df.name == pname]['product_id'].values[0]
+    product_id = ""
+    try:
+        product_id = df[df.name == pname]['product_id'].values[0]
+    except:
+        product_id = None
 
     # print(movie_id)
 
     # create a list of enumerations for the similarity score
-    score = list(enumerate(cs[product_id]))
-    # scroe looks like: [(movie_id, score), (1, 0.0625)
-    print(score)
+    if product_id != None:
+        score = list(enumerate(cs[product_id]))
+        # scroe looks like: [(movie_id, score), (1, 0.0625)
+        print(score)
 
-    # sort the score list
-    sorted_score = sorted(score, key=lambda x: x[1], reverse=True)
-    sorted_score = sorted_score[1:]
+        # sort the score list
+        sorted_score = sorted(score, key=lambda x: x[1], reverse=True)
+        sorted_score = sorted_score[1:]
 
-    print(sorted_score)
+        print(sorted_score)
 
     # print the recommended movies that are similar to what the user likes
     j = 0
     print(f"The top 3 food recommended to {pname} are: \n")
     prods = []
+
     for item in sorted_score:
         product_title = df[df.product_id == item[0]]['name'].values[0]
         prods.append(product_title)

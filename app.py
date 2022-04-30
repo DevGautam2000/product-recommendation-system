@@ -20,7 +20,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
 
-port = 5050
+port = 6050
 
 
 def fetch(id):
@@ -49,24 +49,40 @@ def main():
         docs = json.loads(obj[0])
         prods = []
         for item in docs['orderedItems']:
-            # print(item)
-            prods.append(item['product'][0])
-        # print(prods)
+            # print(f"{item=}")
+            for products in item['product']:
+                prods.append(products)
+        # print(f"{prods=}")
         _json = open("names.json", 'w')
         _json.write(json.dumps(prods))
         _json.close()
 
-        with open('prods.json', encoding='utf-8') as inputfile:
+        with open('names.json', encoding='utf-8') as inputfile:
             df = pd.read_json(inputfile)
 
         df.to_csv('prods.csv', encoding='utf-8', index=False)
 
+        fileObject = open("./names.json", "r")
+        jsonContent = fileObject.read()
+        prods_list = json.loads(jsonContent)
+
+        names = [item['name'] for item in prods_list]
+
+        from random import randrange as random
+
         import recommendation_sys as recommender
-        recom = recommender.recommend()
-        print(recom)
+        recom = recommender.recommend(names[random(len(names))])
+        final_recom = []
+        for item in recom:
+            for lobj in prods_list:
+                if item == lobj['name']:
+                    final_recom.append(lobj)
 
-        return jsonify(recom)
+        # print(f"{final_recom=}")
 
+        return jsonify(final_recom)
+
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(port=port)
 
 
