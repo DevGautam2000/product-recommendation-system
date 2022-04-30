@@ -61,7 +61,7 @@ def recommend(name):
 
     # get the consine similarity matrix from the count matrix
     cs = cosine_similarity(cm)
-    print(cs)
+    # print(cs)
 
     # get the shape of the consine similarity matrix
     cs.shape
@@ -81,13 +81,13 @@ def recommend(name):
     if product_id != None:
         score = list(enumerate(cs[product_id]))
         # scroe looks like: [(movie_id, score), (1, 0.0625)
-        print(score)
+        # print(score)
 
         # sort the score list
         sorted_score = sorted(score, key=lambda x: x[1], reverse=True)
         sorted_score = sorted_score[1:]
 
-        print(sorted_score)
+        # print(sorted_score)
 
     # print the recommended movies that are similar to what the user likes
     j = 0
