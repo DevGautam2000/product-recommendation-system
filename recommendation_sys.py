@@ -77,7 +77,7 @@ def recommend(name):
 
         # print(sorted_score)
 
-    # print the recommended movies that are similar to what the user likes
+    # print the recommended products that are similar to what the user purchases
     j = 0
     print(f"The top 3 food recommended to {pname} are: \n")
     prods = []
