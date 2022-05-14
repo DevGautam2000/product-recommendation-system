@@ -2,7 +2,7 @@
 
 #import libraries
 import json
-import numpy as mp
+import numpy as np
 import pandas as pd
 
 from sklearn.metrics.pairwise import cosine_similarity
@@ -56,19 +56,19 @@ def recommend(name):
 
     pname = name
 
-    # get the id of the movie
+    # get the id of the product
     product_id = ""
     try:
         product_id = df[df.name == pname]['product_id'].values[0]
     except:
         product_id = None
 
-    # print(movie_id)
+    # print(product_id)
 
     # create a list of enumerations for the similarity score
     if product_id != None:
         score = list(enumerate(cs[product_id]))
-        # scroe looks like: [(movie_id, score), (1, 0.0625)
+        # scroe looks like: [(product_id, score), (1, 0.0625)
         # print(score)
 
         # sort the score list
